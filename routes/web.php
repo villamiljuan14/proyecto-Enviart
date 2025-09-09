@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Usuario\Usuariocontroller;
+use App\Http\Controllers\Formulario\FormularioController;
 Route::get('/', function () {
     return view('welcome');
 });
