@@ -8,8 +8,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])
-->resource('Usuarios',UsuarioController::class)
-->names('Usuarios');
+->resource('usuarios',UsuarioController::class)
+->names('usuarios');
 
 Route::middleware([
     'auth:sanctum',

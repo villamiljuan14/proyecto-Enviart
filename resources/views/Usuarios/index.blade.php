@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4">
-            <a href="{{ route('Usuarios.create') }}" 
+            <a href="{{ route('usuarios.create') }}" 
                class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                Crear Nuevo Usuario
             </a>
@@ -21,34 +21,48 @@
                         <tr>
                             <th class="border border-blue-400 px-4 py-2">ID</th>
                             <th class="border border-blue-400 px-4 py-2">Email</th>
-                            <th class="border border-blue-400 px-4 py-2">Nombre</th>
-                            <th class="border border-blue-400 px-4 py-2">Apellido</th>
+                            <th class="border border-blue-400 px-4 py-2">Nombres</th>
+                            <th class="border border-blue-400 px-4 py-2">Apellidos</th>
                             <th class="border border-blue-400 px-4 py-2">Estado</th>
-                            <th class="border border-blue-400 px-4 py-2">Rol (ID)</th>
+                            <th class="border border-blue-400 px-4 py-2">Tipo de Rol</th>
+                            <th class="border border-blue-400 px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($usuarios as $usuario)
                             <tr class="hover:bg-blue-50">
-                                <td class="border border-blue-400 px-4 py-2">{{ $usuario->ID_USUARIO }}</td>
-                                <td class="border border-blue-400 px-4 py-2">{{ $usuario->EMAIL_USUARIO }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $usuario->id_usuario }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $usuario->email_usuario }}</td>
                                 <td class="border border-blue-400 px-4 py-2">
-                                    {{ $usuario->PRIMER_NOMBRE_USUARIO }}
-                                    {{ $usuario->SEGUNDO_NOMBRE_USUARIO }}
+                                    {{ $usuario->primer_nombre }} {{ $usuario->segundo_nombre }}
                                 </td>
                                 <td class="border border-blue-400 px-4 py-2">
-                                    {{ $usuario->PRIMER_APELLIDO_USUARIO }}
-                                    {{ $usuario->SEGUNDO_APELLIDO_USUARIO }}
+                                    {{ $usuario->primer_apellido }} {{ $usuario->segundo_apellido }}
                                 </td>
                                 <td class="border border-blue-400 px-4 py-2 text-center">
-                                    @if($usuario->ESTADO_USUARIO === 1)
+                                    @if($usuario->estado_usuario === 1)
                                         <span class="px-2 py-1 bg-green-200 text-green-800 rounded">Activo</span>
                                     @else
                                         <span class="px-2 py-1 bg-red-200 text-red-800 rounded">Inactivo</span>
                                     @endif
                                 </td>
                                 <td class="border border-blue-400 px-4 py-2 text-center">
-                                    {{ $usuario->ROL_ID_ROL }}
+                                    {{ $usuario->rol->tipo_rol ?? 'Sin rol' }}
+                                </td>
+                                <td class="border border-blue-400 px-4 py-2 text-center">
+                                    <a href="{{ route('usuarios.edit', $usuario) }}"
+                                        class="bg-blue-500 hover:bg-blue-600 text-black font-bold py-1 px-2 rounded">
+                                        Editar
+                                    </a>
+                                    <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST"
+                                          style="display:inline-block;" onsubmit="return confirm('¿Eliminar este usuario?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="bg-red-500 hover:bg-red-600 text-black font-bold py-1 px-2 rounded">
+                                            Eliminar
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -80,7 +94,7 @@
                     });
                 </script>
 
-                {{-- Estilo para separar botones de la tabla --}}
+                {{-- Estilo para separar botones de exportación --}}
                 <style>
                     div.dt-buttons {
                         margin-bottom: 1rem; 

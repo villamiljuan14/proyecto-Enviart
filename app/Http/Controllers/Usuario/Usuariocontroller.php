@@ -4,64 +4,62 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Models\Usuario;
+use App\Models\Rol;
+use App\Http\Requests\StoreUsuarioRequest;
 use Illuminate\Http\Request;
 
 class Usuariocontroller extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $usuarios = Usuario::all();
+        $usuarios = Usuario::with('rol') 
+                        ->orderBy('id_usuario')
+                        ->get();
+
         return view('usuarios.index', compact('usuarios'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-         return view('usuarios.create');
+        $roles = Rol::orderBy('nombre_rol')->get(['id_rol', 'nombre_rol']);
+
+        return view('usuarios.create', [
+            'roles' => $roles,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreUsuarioRequest $request)
     {
-        //
+        Usuario::create($request->validated());
+
+        return redirect()->route('usuarios.index')->with('ok', 'Usuario creado');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Usuario $usuario)
     {
-        //
+        return view('usuarios.show', compact('usuario'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Usuario $usuario)
     {
-        //
+        $roles = Rol::orderBy('tipo_rol')->get(['id_rol', 'tipo_rol']);
+        return view('usuarios.edit', compact('usuario', 'roles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Usuario $usuario)
+    public function update(StoreUsuarioRequest $request, Usuario $usuario)
     {
-        //
+        $usuario->update($request->validated());
+
+        return redirect()->route('usuarios.index')->with('ok', 'Usuario actualizado');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Usuario $usuario)
     {
-        //
+        try {
+            $usuario->delete();
+            return back()->with('ok', 'Usuario eliminado');
+        } catch (\Throwable $e) {
+            return back()->withErrors('No se puede eliminar: tiene registros relacionados.');
+        }
     }
 }
