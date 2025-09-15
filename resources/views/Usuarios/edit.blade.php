@@ -12,7 +12,6 @@
                     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
                         <div class="bg-white p-6 shadow sm:rounded-lg">
                             <form action="{{ route('usuarios.update', $usuario) }}" method="POST" class="space-y-6">
-
                                 @csrf
                                 @method('PUT')
 
@@ -22,9 +21,14 @@
                                 ])
 
                                 <div class="pt-4 flex gap-3">
-                                    <button class="px-4 py-2 bg-blue-600 text-white rounded">Actualizar</button>
+                                    <button type="submit"
+                                        class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Actualizar
+                                    </button>
                                     <a href="{{ route('usuarios.index') }}"
-                                        class="px-4 py-2 border rounded">Cancelar</a>
+                                        class="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">
+                                        Cancelar
+                                    </a>
                                 </div>
                             </form>
                         </div>
@@ -34,4 +38,3 @@
         </div>
     </div>
 </x-app-layout>
-

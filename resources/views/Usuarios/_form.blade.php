@@ -1,5 +1,4 @@
 @php
-    // Para edición, $usuario llega definido; en creación es null.
     $val = fn($key, $default = '') => old($key, isset($usuario) ? ($usuario->{$key} ?? $default) : $default);
 @endphp
 
@@ -65,16 +64,25 @@
     </div>
 
     <div>
-        <label class="block text-sm font-medium mb-1">Teléfono</label>
+        <label class="block text-sm font-medium mb-1">Teléfono *</label>
         <input type="text" name="telefono_usuario" value="{{ $val('telefono_usuario') }}"
-               class="w-full border rounded px-3 py-2" maxlength="20">
+               class="w-full border rounded px-3 py-2" required maxlength="20">
         @error('telefono_usuario')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
     </div>
 
     <div>
-        <label class="block text-sm font-medium mb-1">Contraseña *</label>
-        <input type="password" name="contraseña_usuario" class="w-full border rounded px-3 py-2" required maxlength="45">
-        @error('contraseña_usuario')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
+        <label class="block text-sm font-medium mb-1">
+            Contraseña @if(isset($usuario)) <small>(dejar vacío para no cambiar)</small> @else * @endif
+        </label>
+        <input 
+            type="password" 
+            name="contrasena_usuario" 
+            class="w-full border rounded px-3 py-2" 
+            maxlength="100"
+            @if(!isset($usuario)) required @endif
+            placeholder="@if(isset($usuario)) Dejar vacío para no cambiar @endif"
+        >
+        @error('contrasena_usuario')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
     </div>
 
     <div>
@@ -88,6 +96,15 @@
             @endforeach
         </select>
         @error('rol_id_rol')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium mb-1">Estado *</label>
+        <select name="estado_usuario" class="w-full border rounded px-3 py-2" required>
+            <option value="1" @selected($val('estado_usuario', 1) == 1)>Activo</option>
+            <option value="0" @selected($val('estado_usuario', 0) == 0)>Inactivo</option>
+        </select>
+        @error('estado_usuario')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
     </div>
 
 </div>

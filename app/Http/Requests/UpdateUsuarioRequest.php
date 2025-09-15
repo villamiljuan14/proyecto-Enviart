@@ -12,7 +12,7 @@ class UpdateUsuarioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class UpdateUsuarioRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('usuario')->id_usuario; 
+        $id = $this->route('usuario')->id_usuario;
         return [
             'doc_usuario' => [
                 'required',
@@ -31,7 +31,7 @@ class UpdateUsuarioRequest extends FormRequest
                 Rule::unique('usuarios', 'doc_usuario')->ignore($id, 'id_usuario'),
             ],
             'tipo_documento' => 'required|in:CE,TI,CC',
-            'contraseña_usuario' => 'required|string|max:45',
+            'contrasena_usuario' => 'nullable|string|max:100',
             'email_usuario' => [
                 'required',
                 'email',
@@ -42,7 +42,7 @@ class UpdateUsuarioRequest extends FormRequest
             'segundo_nombre' => 'nullable|string|max:80',
             'primer_apellido' => 'required|string|max:80',
             'segundo_apellido' => 'nullable|string|max:80',
-            'telefono_usuario' => 'nullable|string|max:20',
+            'telefono_usuario' => 'required|string|max:20',
             'estado_usuario' => 'required|boolean',
             'rol_id_rol' => 'required|integer|exists:roles,id_rol',
         ];
@@ -55,12 +55,12 @@ class UpdateUsuarioRequest extends FormRequest
             'doc_usuario.unique' => 'Este documento ya está registrado.',
             'tipo_documento.required' => 'El tipo de documento es obligatorio.',
             'tipo_documento.in' => 'El tipo de documento debe ser CE, TI o CC.',
-            'contraseña_usuario.required' => 'La contraseña es obligatoria.',
             'email_usuario.required' => 'El correo electrónico es obligatorio.',
             'email_usuario.email' => 'Debe ingresar un correo válido.',
             'email_usuario.unique' => 'Este correo ya está registrado.',
             'primer_nombre.required' => 'El primer nombre es obligatorio.',
             'primer_apellido.required' => 'El primer apellido es obligatorio.',
+            'telefono_usuario.required' => 'El número de teléfono es obligatorio.',
             'rol_id_rol.required' => 'El rol es obligatorio.',
             'rol_id_rol.exists' => 'El rol seleccionado no es válido.',
         ];
