@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Usuario\UsuarioController;
 use App\Http\Controllers\Formulario\FormularioController;
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -13,8 +15,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])
 ->names('usuarios');
 
 Route::resource('usuarios', UsuarioController::class);
-
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

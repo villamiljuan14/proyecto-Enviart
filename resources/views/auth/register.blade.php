@@ -1,60 +1,70 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
-
-        <x-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
-                </div>
-            @endif
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
+    <div class="flex min-h-screen items-center justify-center bg-gray-100">
+        <div class="flex w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden bg-white">
+            
+            {{-- Panel izquierdo --}}
+            <div class="hidden md:flex flex-col items-center justify-center w-1/2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-10">
+                <h2 class="text-3xl font-bold mb-2">Bienvenido de vuelta!</h2>
+                <p class="mb-6">¿Ya tienes una cuenta? Inicia sesión y continúa con nosotros.</p>
+                <a href="{{ route('login') }}" 
+                   class="px-6 py-2 bg-white text-purple-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition">
+                    Iniciar sesión
                 </a>
-
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
             </div>
-        </form>
-    </x-authentication-card>
+
+            {{-- Panel derecho (form registro) --}}
+            <div class="w-full md:w-1/2 p-8">
+                <div class="flex justify-center mb-6">
+                    <x-authentication-card-logo />
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Crear Cuenta</h2>
+
+                <x-validation-errors class="mb-4" />
+
+                <form method="POST" action="{{ route('register') }}">
+                    @csrf
+
+                    <div class="mb-4">
+                        <x-label for="name" value="Nombres" />
+                        <x-input id="name" type="text" name="name" :value="old('name')" required autofocus class="w-full"/>
+                    </div>
+
+                    <div class="mb-4">
+                        <x-label for="email" value="Email" />
+                        <x-input id="email" type="email" name="email" :value="old('email')" required class="w-full"/>
+                    </div>
+
+                    <div class="mb-4">
+                        <x-label for="password" value="Contraseña" />
+                        <x-input id="password" type="password" name="Contraseña" required autocomplete="new-password" class="w-full"/>
+                    </div>
+
+                    <div class="mb-4">
+                        <x-label for="password_confirmation" value="Confirmar contraseña" />
+                        <x-input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" class="w-full"/>
+                    </div>
+
+                    @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                        <div class="mb-4">
+                            <label for="terms" class="flex items-center">
+                                <x-checkbox name="terms" id="terms" required />
+                                <span class="ml-2 text-sm text-gray-600">
+                                    {!! __('I agree to the :terms_of_service and :privacy_policy', [
+                                            'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-indigo-600 hover:text-indigo-800">'.__('Terms of Service').'</a>',
+                                            'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-indigo-600 hover:text-indigo-800">'.__('Privacy Policy').'</a>',
+                                    ]) !!}
+                                </span>
+                            </label>
+                        </div>
+                    @endif
+
+                    <button type="submit" 
+                        class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                        Regstrarse
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </x-guest-layout>
+
