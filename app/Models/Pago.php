@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 
-class Pagos extends Model
+class Pago extends Model
 {
     protected $table = 'pagos';
     protected $primaryKey = 'id_pago';
