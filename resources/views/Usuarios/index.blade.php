@@ -9,19 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4" style="padding: 16px;">
 
             {{-- Botón para crear nuevo usuario --}}
-            <a href="{{ route('usuarios.create') }}" 
+            <a href="{{ route('usuarios.create') }}"
                class="inline-block bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">
                Crear Nuevo Usuario
             </a>
 
             {{-- ✅ Alerta de éxito --}}
             @if (session('ok'))
-                <div id="alert-success" 
-                     class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative transition-opacity duration-500" 
+                <div id="alert-success"
+                     class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative transition-opacity duration-500"
                      role="alert">
                     <strong class="font-bold">¡Éxito! </strong>
                     <span class="block sm:inline">{{ session('ok') }}</span>
-                    <button type="button" 
+                    <button type="button"
                         class="absolute top-0 bottom-0 right-0 px-4 py-3 text-green-500"
                         onclick="document.getElementById('alert-success').remove();">
                         ✖
@@ -40,8 +40,8 @@
 
             {{-- ❌ Alerta de error --}}
             @if ($errors->any())
-                <div id="alert-error" 
-                     class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative transition-opacity duration-500" 
+                <div id="alert-error"
+                     class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative transition-opacity duration-500"
                      role="alert">
                     <strong class="font-bold">Error: </strong>
                     <ul class="list-disc pl-6">
@@ -49,7 +49,7 @@
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
-                    <button type="button" 
+                    <button type="button"
                         class="absolute top-0 bottom-0 right-0 px-4 py-3 text-red-500"
                         onclick="document.getElementById('alert-error').remove();">
                         ✖
@@ -158,7 +158,7 @@
 
                 <style>
                     div.dt-buttons {
-                        margin-bottom: 1rem; 
+                        margin-bottom: 1rem;
                     }
                 </style>
 

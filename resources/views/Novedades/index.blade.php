@@ -1,16 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Listado de Pedidos') }}
+            {{ __('Listado de Novedades') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4" style="padding: 16px;">
-            {{-- Botón para crear nuevo pedido --}}
-            <a href="{{ route('pedidos.create') }}"
+
+            {{-- Botón para crear nueva Novedad --}}
+            <a href="{{ route('usuarios.create') }}"
                class="inline-block bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">
-                Crear Nuevo Pedido
+               Crear Nueva Novedad
             </a>
 
             {{-- ✅ Alerta de éxito --}}
@@ -21,8 +22,10 @@
                     <strong class="font-bold">¡Éxito! </strong>
                     <span class="block sm:inline">{{ session('ok') }}</span>
                     <button type="button"
-                            class="absolute top-0 bottom-0 right-0 px-4 py-3 text-green-500"
-                            onclick="document.getElementById('alert-success').remove();">✖</button>
+                        class="absolute top-0 bottom-0 right-0 px-4 py-3 text-green-500"
+                        onclick="document.getElementById('alert-success').remove();">
+                        ✖
+                    </button>
                 </div>
                 <script>
                     setTimeout(() => {
@@ -47,8 +50,10 @@
                         @endforeach
                     </ul>
                     <button type="button"
-                            class="absolute top-0 bottom-0 right-0 px-4 py-3 text-red-500"
-                            onclick="document.getElementById('alert-error').remove();">✖</button>
+                        class="absolute top-0 bottom-0 right-0 px-4 py-3 text-red-500"
+                        onclick="document.getElementById('alert-error').remove();">
+                        ✖
+                    </button>
                 </div>
                 <script>
                     setTimeout(() => {
@@ -65,54 +70,42 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
 
-                {{-- 🟦 Tabla de pedidos con DataTables --}}
-                <table id="pedidos" class="table-auto w-full border-collapse border border-blue-400 shadow-lg">
+                {{-- 🟦 Tabla de novedades con DataTables --}}
+                <table id="usuarios" class="table-auto w-full border-collapse border border-blue-400 shadow-lg">
                     <thead class="bg-blue-700 text-white">
                         <tr>
-                            <th class="border border-blue-400 px-4 py-2">ID Pedido</th>
-                            <th class="border border-blue-400 px-4 py-2">Fecha Pedido</th>
-                            <th class="border border-blue-400 px-4 py-2">Estado</th>
-                            <th class="border border-blue-400 px-4 py-2">Novedad</th>
-                            <th class="border border-blue-400 px-4 py-2">Usuario</th>
-                            <th class="border border-blue-400 px-4 py-2">Pago</th>
+                            <th class="border border-blue-400 px-4 py-2">Id</th>
+                            <th class="border border-blue-400 px-4 py-2">Descripcion Novedad</th>
+                            <th class="border border-blue-400 px-4 py-2">Fecha Novedad</th>
+                            <th class="border border-blue-400 px-4 py-2">Estado Novedad</th>
                             <th class="border border-blue-400 px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pedidos as $pedido)
+                        @foreach($novedades as $novedad)
                             <tr class="hover:bg-blue-50">
-                                <td class="border border-blue-400 px-4 py-2">{{ $pedido->id_pedido }}</td>
-                                <td class="border border-blue-400 px-4 py-2">{{ $pedido->fecha_pedido }}</td>
-                                <td class="border border-blue-400 px-4 py-2">{{ $pedido->estado_pedido }}</td>
-
-                                {{-- 🔹 Novedad --}}
-                                <td class="border border-blue-400 px-4 py-2">
-                                    {{ $pedido->novedad?->descripcion_novedad ?? '—' }}
+                                <td class="border border-blue-400 px-4 py-2">{{ $novedad->id_novedad }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $novedad->Descripcion_novedad }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $novedad->fecha_novedad }}</td>
+                                <td class="border border-blue-400 px-4 py-2 text-center">
+                                    @if($novedad->estado_novedad === 1)
+                                        <span class="px-2 py-1 bg-green-200 text-green-800 rounded">Resuelta</span>
+                                    @else
+                                        <span class="px-2 py-1 bg-red-200 text-red-800 rounded">Pendiente</span>
+                                    @endif
                                 </td>
-
-                                {{-- 🔹 Usuario --}}
-                                <td class="border border-blue-400 px-4 py-2">
-                                    {{ $pedido->usuario?->primer_nombre }} {{ $pedido->usuario?->primer_apellido }}
-                                </td>
-
-                                {{-- 🔹 Pago --}}
-                                <td class="border border-blue-400 px-4 py-2">
-                                    {{ $pedido->pago->metodo_de_pago }}
-                                </td>
-
-                                {{-- 🔹 Acciones --}}
                                 <td class="border border-blue-400 px-4 py-2 text-center space-x-2">
-                                    <a href="{{ route('pedidos.edit', $pedido) }}"
-                                       class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-1 px-3 rounded">
+                                    <a href="{{ route('novedades.edit', $novedad) }}"
+                                        class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-1 px-3 rounded">
                                         Editar
                                     </a>
-                                    <form action="{{ route('pedidos.destroy', $pedido) }}" method="POST"
+                                    <form action="{{ route('novedades.destroy', $novedad) }}" method="POST"
                                           class="inline-block"
-                                          onsubmit="return confirm('¿Eliminar este pedido?')">
+                                          onsubmit="return confirm('¿Eliminar esta novedad?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                                class="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-1 px-3 rounded">
+                                            class="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-1 px-3 rounded">
                                             Eliminar
                                         </button>
                                     </form>
@@ -136,18 +129,18 @@
 
                 <script>
                     $(function () {
-                        $('#pedidos').DataTable({
+                        $('#usuarios').DataTable({
                             pageLength: 20,
                             dom: 'Bfrtip',
                             language: {
                                 url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json'
                             },
                             buttons: [
-                                { extend: 'copy', title: 'Reporte de Pedidos Enviart' },
-                                { extend: 'csv', title: 'Reporte de Pedidos Enviart' },
-                                { extend: 'excel', title: 'Reporte de Pedidos Enviart' },
-                                { extend: 'pdf', title: 'Reporte de Pedidos Enviart' },
-                                { extend: 'print', title: 'Reporte de Pedidos Enviart' }
+                                { extend: 'copy', title: 'Reporte de Novedades Enviart' },
+                                { extend: 'csv', title: 'Reporte de Novedades Enviart' },
+                                { extend: 'excel', title: 'Reporte de NovedadesEnviart' },
+                                { extend: 'pdf', title: 'Reporte de Novedades Enviart' },
+                                { extend: 'print', title: 'Reporte de Novedades Enviart' }
                             ]
                         });
                     });
@@ -158,6 +151,7 @@
                         margin-bottom: 1rem;
                     }
                 </style>
+
             </div>
         </div>
     </div>
