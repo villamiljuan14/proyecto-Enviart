@@ -72,9 +72,9 @@
                             <th class="border border-blue-400 px-4 py-2">ID Pedido</th>
                             <th class="border border-blue-400 px-4 py-2">Fecha Pedido</th>
                             <th class="border border-blue-400 px-4 py-2">Estado</th>
-                            <th class="border border-blue-400 px-4 py-2">Novedad</th>
+                            <th class="border border-blue-400 px-4 py-2">Novedades</th>
                             <th class="border border-blue-400 px-4 py-2">Usuario</th>
-                            <th class="border border-blue-400 px-4 py-2">Pago</th>
+                            <th class="border border-blue-400 px-4 py-2">Pagos</th>
                             <th class="border border-blue-400 px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
@@ -85,9 +85,9 @@
                                 <td class="border border-blue-400 px-4 py-2">{{ $pedido->fecha_pedido }}</td>
                                 <td class="border border-blue-400 px-4 py-2">{{ $pedido->estado_pedido }}</td>
 
-                                {{-- 🔹 Novedad --}}
+                                {{-- 🔹 Novedades --}}
                                 <td class="border border-blue-400 px-4 py-2">
-                                    {{ $pedido->novedad?->descripcion_novedad ?? '—' }}
+                                    {{ $pedido->novedades->pluck('descripcion_novedad')->join(', ') ?: '—' }}
                                 </td>
 
                                 {{-- 🔹 Usuario --}}
@@ -95,9 +95,9 @@
                                     {{ $pedido->usuario?->primer_nombre }} {{ $pedido->usuario?->primer_apellido }}
                                 </td>
 
-                                {{-- 🔹 Pago --}}
+                                {{-- 🔹 Pagos --}}
                                 <td class="border border-blue-400 px-4 py-2">
-                                    {{ $pedido->pago->metodo_de_pago }}
+                                    {{ $pedido->pagos->pluck('metodo_de_pago')->join(', ') ?: '—' }}
                                 </td>
 
                                 {{-- 🔹 Acciones --}}

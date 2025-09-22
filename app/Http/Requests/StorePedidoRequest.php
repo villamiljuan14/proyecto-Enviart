@@ -11,38 +11,30 @@ class StorePedidoRequest extends FormRequest
         return true;
     }
 
-    /**
-     *
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'estado_pedido'       => 'required|in:En transito,bodega,Entregado',
-            'fecha_pedido'        => 'required|date',
-            'novedades_id_novedad'=> 'required|integer|exists:novedades,id_novedad',
-            'pago_id_pago'        => 'required|integer|exists:pagos,id_pago',
-            'usuario_id_usuario'  => 'required|integer|exists:usuarios,id_usuario',
+            'estado_pedido' => 'required|in:En transito,bodega,Entregado',
+            'fecha_pedido' => 'required|date',
+            'usuario_id_usuario' => 'required|integer|exists:usuarios,id_usuario',
+            'novedades' => 'nullable|array',
+            'novedades.*' => 'integer|exists:novedades,id_novedad',
+            'pagos' => 'nullable|array',
+            'pagos.*' => 'integer|exists:pagos,id_pago',
         ];
     }
-    public function messages()
+
+    public function messages(): array
     {
         return [
-            'estado_pedido.required'        => 'El estado del pedido es obligatorio.',
-            'estado_pedido.in'              => 'El estado debe ser "En transito", "bodega" o "Entregado".',
-
-            'fecha_pedido.required'         => 'La fecha del pedido es obligatoria.',
-            'fecha_pedido.date'             => 'La fecha debe tener un formato válido (YYYY-MM-DD HH:MM:SS).',
-
-            'novedades_id_novedad.required' => 'Debe seleccionar una novedad.',
-            'novedades_id_novedad.exists'   => 'La novedad seleccionada no existe.',
-
-            'pago_id_pago.required'         => 'Debe seleccionar un método de pago.',
-            'pago_id_pago.exists'           => 'El pago seleccionado no existe.',
-
-            'usuario_id_usuario.required'   => 'Debe seleccionar un usuario.',
-            'usuario_id_usuario.exists'     => 'El usuario seleccionado no existe.',
+            'estado_pedido.required' => 'El estado del pedido es obligatorio.',
+            'estado_pedido.in' => 'El estado debe ser "En transito", "bodega" o "Entregado".',
+            'fecha_pedido.required' => 'La fecha del pedido es obligatoria.',
+            'fecha_pedido.date' => 'La fecha debe tener un formato válido.',
+            'usuario_id_usuario.required' => 'Debe seleccionar un usuario.',
+            'usuario_id_usuario.exists' => 'El usuario seleccionado no existe.',
+            'novedades.*.exists' => 'Una de las novedades seleccionadas no existe.',
+            'pagos.*.exists' => 'Uno de los pagos seleccionados no existe.',
         ];
     }
 }

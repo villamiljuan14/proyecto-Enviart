@@ -19,52 +19,58 @@
                 </div>
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Crear Cuenta</h2>
 
+                {{-- Mostrar errores de validación --}}
                 <x-validation-errors class="mb-4" />
 
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
 
+                    {{-- Nombres --}}
                     <div class="mb-4">
                         <x-label for="name" value="Nombres" />
                         <x-input id="name" type="text" name="name" :value="old('name')" required autofocus class="w-full"/>
                     </div>
 
+                    {{-- Email --}}
                     <div class="mb-4">
                         <x-label for="email" value="Email" />
                         <x-input id="email" type="email" name="email" :value="old('email')" required class="w-full"/>
                     </div>
 
+                    {{-- Contraseña --}}
                     <div class="mb-4">
                         <x-label for="password" value="Contraseña" />
-                        <x-input id="password" type="password" name="Contraseña" required autocomplete="new-password" class="w-full"/>
+                        <x-input id="password" type="password" name="password" required autocomplete="new-password" class="w-full"/>
                     </div>
 
+                    {{-- Confirmar contraseña --}}
                     <div class="mb-4">
                         <x-label for="password_confirmation" value="Confirmar contraseña" />
                         <x-input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" class="w-full"/>
                     </div>
 
+                    {{-- Términos y política --}}
                     @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                         <div class="mb-4">
                             <label for="terms" class="flex items-center">
                                 <x-checkbox name="terms" id="terms" required />
                                 <span class="ml-2 text-sm text-gray-600">
                                     {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                            'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-indigo-600 hover:text-indigo-800">'.__('Terms of Service').'</a>',
-                                            'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-indigo-600 hover:text-indigo-800">'.__('Privacy Policy').'</a>',
+                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-indigo-600 hover:text-indigo-800">'.__('Terms of Service').'</a>',
+                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-indigo-600 hover:text-indigo-800">'.__('Privacy Policy').'</a>',
                                     ]) !!}
                                 </span>
                             </label>
                         </div>
                     @endif
 
+                    {{-- Botón registrar --}}
                     <button type="submit" 
                         class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">
-                        Regstrarse
+                        Registrarse
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </x-guest-layout>
-
