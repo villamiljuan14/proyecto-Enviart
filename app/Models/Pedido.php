@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $peso_pedido
  * @property float $largo_pedido
  * @property float $alto_pedido
+ * @property float $ancho_pedido
  * @property bool $fragil
  * 
  * @property Usuario $usuario
@@ -63,24 +64,28 @@ class Pedido extends Model
 	public function noguias()
 	{
 		return $this->belongsToMany(Noguia::class, 'noguias_has_pedidos', 'pedidos_id_pedido', 'noguias_id_no_guia')
-					->withPivot('id_guia_pedido');
+			->withPivot('id_guia_pedido');
 	}
 
 	public function novedades()
 	{
 		return $this->belongsToMany(Novedad::class, 'novedades_has_pedidos', 'pedidos_id_pedido', 'novedades_id_novedad')
-					->withPivot('id_pedido_novedad', 'observacion_pedido', 'fecha_registro');
+			->withPivot('id_pedido_novedad', 'observacion_pedido', 'fecha_registro');
 	}
+
 
 	public function pagos()
 	{
-		return $this->belongsToMany(Pago::class, 'pagos_has_pedidos', 'pedidos_id_pedido', 'pagos_id_pago')
-					->withPivot('id_pago_pedido');
+		return $this->belongsToMany(
+			Pago::class,
+			'pagos_has_pedidos',
+			'pedidos_id_pedido',
+			'pagos_id_pago'
+		);
 	}
-
 	public function rutas()
 	{
 		return $this->belongsToMany(Ruta::class, 'pedido_has_rutas', 'pedido_id_pedido', 'ruta_id_ruta')
-					->withPivot('id_ruta_pedido');
+			->withPivot('id_ruta_pedido');
 	}
 }

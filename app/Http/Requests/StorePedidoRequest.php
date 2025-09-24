@@ -6,35 +6,35 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StorePedidoRequest extends FormRequest
 {
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
 
-    public function rules(): array
+    public function rules()
     {
         return [
-            'estado_pedido' => 'required|in:En transito,bodega,Entregado',
-            'fecha_pedido' => 'required|date',
-            'usuario_id_usuario' => 'required|integer|exists:usuarios,id_usuario',
-            'novedades' => 'nullable|array',
-            'novedades.*' => 'integer|exists:novedades,id_novedad',
-            'pagos' => 'nullable|array',
-            'pagos.*' => 'integer|exists:pagos,id_pago',
+            'estado_pedido' => 'required|string|in:En transito,bodega,Entregado',
+            'novedad' => 'nullable|string|max:255',
+            'peso_pedido' => 'required|numeric|min:0',
+            'largo_pedido' => 'required|numeric|min:0',
+            'ancho_pedido' => 'required|numeric|min:0',
+            'alto_pedido' => 'required|numeric|min:0',
+            'fragil' => 'nullable|boolean',
+            'pagos' => 'required|array|min:1',
+            'pagos.*' => 'exists:pagos,id_pago',
         ];
     }
 
-    public function messages(): array
+    public function messages()
     {
         return [
             'estado_pedido.required' => 'El estado del pedido es obligatorio.',
-            'estado_pedido.in' => 'El estado debe ser "En transito", "bodega" o "Entregado".',
-            'fecha_pedido.required' => 'La fecha del pedido es obligatoria.',
-            'fecha_pedido.date' => 'La fecha debe tener un formato válido.',
-            'usuario_id_usuario.required' => 'Debe seleccionar un usuario.',
-            'usuario_id_usuario.exists' => 'El usuario seleccionado no existe.',
-            'novedades.*.exists' => 'Una de las novedades seleccionadas no existe.',
-            'pagos.*.exists' => 'Uno de los pagos seleccionados no existe.',
+            'metodo_pago.required' => 'El método de pago es obligatorio.',
+            'peso_pedido.required' => 'El peso es obligatorio.',
+            'largo_pedido.required' => 'El largo es obligatorio.',
+            'ancho_pedido.required' => 'El ancho es obligatorio.',
+            'alto_pedido.required' => 'El alto es obligatorio.',
         ];
     }
 }

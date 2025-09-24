@@ -1,17 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Listado de Novedades') }}
+            {{ __('Listado de Vehículos') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4" style="padding: 16px;">
 
-            {{-- Botón para crear nueva Novedad --}}
-            <a href="{{ route('usuarios.create') }}"
+            {{-- Botón para crear nuevo vehículo --}}
+            <a href="{{ route('vehiculos.create') }}"
                class="inline-block bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">
-               Crear Nueva Novedad
+                Crear Nuevo Vehículo
             </a>
 
             {{-- ✅ Alerta de éxito --}}
@@ -70,38 +70,50 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
 
-                {{-- 🟦 Tabla de novedades con DataTables --}}
-                <table id="usuarios" class="table-auto w-full border-collapse border border-blue-400 shadow-lg">
+                {{-- 🟦 Tabla de vehículos con DataTables --}}
+                <table id="vehiculos" class="table-auto w-full border-collapse border border-blue-400 shadow-lg">
                     <thead class="bg-blue-700 text-white">
                         <tr>
-                            <th class="border border-blue-400 px-4 py-2">Id</th>
-                            <th class="border border-blue-400 px-4 py-2">Descripcion Novedad</th>
-                            <th class="border border-blue-400 px-4 py-2">Fecha Novedad</th>
-                            <th class="border border-blue-400 px-4 py-2">Estado Novedad</th>
+                            <th class="border border-blue-400 px-4 py-2">ID</th>
+                            <th class="border border-blue-400 px-4 py-2">Tipo</th>
+                            <th class="border border-blue-400 px-4 py-2">Marca</th>
+                            <th class="border border-blue-400 px-4 py-2">Modelo</th>
+                            <th class="border border-blue-400 px-4 py-2">Año</th>
+                            <th class="border border-blue-400 px-4 py-2">Placa</th>
+                            <th class="border border-blue-400 px-4 py-2">Capacidad</th>
+                            <th class="border border-blue-400 px-4 py-2">Estado</th>
+                            <th class="border border-blue-400 px-4 py-2">Usuario</th>
                             <th class="border border-blue-400 px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($novedades as $novedad)
+                        @foreach($vehiculos as $vehiculo)
                             <tr class="hover:bg-blue-50">
-                                <td class="border border-blue-400 px-4 py-2">{{ $novedad->id_novedad }}</td>
-                                <td class="border border-blue-400 px-4 py-2">{{ $novedad->Descripcion_novedad }}</td>
-                                <td class="border border-blue-400 px-4 py-2">{{ $novedad->fecha_novedad }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $vehiculo->id_vehiculo }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $vehiculo->tipo_vehiculo }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $vehiculo->marca_vehiculo }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $vehiculo->modelo_vehiculo }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $vehiculo->año_vehiculo }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $vehiculo->placa_vehiculo }}</td>
+                                <td class="border border-blue-400 px-4 py-2">{{ $vehiculo->capacidad_carga }}</td>
                                 <td class="border border-blue-400 px-4 py-2 text-center">
-                                    @if($novedad->estado_novedad === 1)
-                                        <span class="px-2 py-1 bg-green-200 text-green-800 rounded">Resuelta</span>
+                                    @if($vehiculo->estado_vehiculo === 'Activo')
+                                        <span class="px-2 py-1 bg-green-200 text-green-800 rounded">Activo</span>
                                     @else
-                                        <span class="px-2 py-1 bg-red-200 text-red-800 rounded">Pendiente</span>
+                                        <span class="px-2 py-1 bg-red-200 text-red-800 rounded">Inactivo</span>
                                     @endif
                                 </td>
+                                <td class="border border-blue-400 px-4 py-2">
+                                    {{ $vehiculo->usuario?->primer_nombre ?? '—' }}
+                                </td>
                                 <td class="border border-blue-400 px-4 py-2 text-center space-x-2">
-                                    <a href="{{ route('novedades.edit', $novedad) }}"
+                                    <a href="{{ route('vehiculos.edit', $vehiculo) }}"
                                         class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-1 px-3 rounded">
                                         Editar
                                     </a>
-                                    <form action="{{ route('novedades.destroy', $novedad) }}" method="POST"
+                                    <form action="{{ route('vehiculos.destroy', $vehiculo) }}" method="POST"
                                           class="inline-block"
-                                          onsubmit="return confirm('¿Eliminar esta novedad?')">
+                                          onsubmit="return confirm('¿Eliminar este vehículo?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -129,18 +141,18 @@
 
                 <script>
                     $(function () {
-                        $('#usuarios').DataTable({
+                        $('#vehiculos').DataTable({
                             pageLength: 20,
                             dom: 'Bfrtip',
                             language: {
                                 url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json'
                             },
                             buttons: [
-                                { extend: 'copy', title: 'Reporte de Novedades Enviart' },
-                                { extend: 'csv', title: 'Reporte de Novedades Enviart' },
-                                { extend: 'excel', title: 'Reporte de NovedadesEnviart' },
-                                { extend: 'pdf', title: 'Reporte de Novedades Enviart' },
-                                { extend: 'print', title: 'Reporte de Novedades Enviart' }
+                                { extend: 'copy', title: 'Reporte de Vehículos Enviart' },
+                                { extend: 'csv', title: 'Reporte de Vehículos Enviart' },
+                                { extend: 'excel', title: 'Reporte de Vehículos Enviart' },
+                                { extend: 'pdf', title: 'Reporte de Vehículos Enviart' },
+                                { extend: 'print', title: 'Reporte de Vehículos Enviart' }
                             ]
                         });
                     });
