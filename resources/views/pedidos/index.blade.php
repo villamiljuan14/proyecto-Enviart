@@ -74,7 +74,7 @@
                             <th class="border border-blue-400 px-4 py-2">Estado</th>
                             <th class="border border-blue-400 px-4 py-2">Novedades</th>
                             <th class="border border-blue-400 px-4 py-2">Usuario</th>
-                            <th class="border border-blue-400 px-4 py-2">Pagos</th>
+                            <th class="border border-blue-400 px-4 py-2">Forma de Pago</th>
                             <th class="border border-blue-400 px-4 py-2">Acciones</th>
                         </tr>
                     </thead>

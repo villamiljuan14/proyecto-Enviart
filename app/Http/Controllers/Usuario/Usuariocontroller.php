@@ -52,7 +52,7 @@ class UsuarioController extends Controller
         if (!empty($data['contrasena_usuario'])) {
             $data['contrasena_usuario'] = bcrypt($data['contrasena_usuario']);
         } else {
-            unset($data['contrasena_usuario']); 
+            unset($data['contrasena_usuario']);
         }
 
         $usuario->update($data);
