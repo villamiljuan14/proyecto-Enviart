@@ -22,15 +22,24 @@
 
     <div>
         <label class="block text-sm font-medium mb-1">Dirección de entrega *</label>
-        <input type="text" name="direccion" value="{{ $val('direccion') }}"
-               class="w-full border rounded px-3 py-2" required maxlength="150">
-        @error('direccion')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
+        <select name="direccion_id" class="w-full border rounded px-3 py-2" required>
+            <option value="">-- Selecciona dirección --</option>
+            @foreach($direcciones as $direccion)
+                <option value="{{ $direccion->id_direccion }}"
+                    @selected($val('direccion_id') == $direccion->id_direccion)>
+                    {{ $direccion->calle_dir }} #{{ $direccion->numero_dir }}, 
+                    {{ $direccion->barrio_dir }} - {{ $direccion->cuidad }}
+                </option>
+            @endforeach
+        </select>
+        @error('direccion_id')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-medium mb-1">Fecha Pedido *</label>
-            <input type="date" name="fecha_pedido" value="{{ $val('fecha_pedido', now()->format('Y-m-d')) }}"
+            <input type="date" name="fecha_pedido" 
+                   value="{{ $val('fecha_pedido', now()->format('Y-m-d')) }}"
                    class="w-full border rounded px-3 py-2" required>
             @error('fecha_pedido')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
         </div>

@@ -7,6 +7,7 @@ use App\Models\Pedido;
 use App\Models\Usuario;
 use App\Models\Novedad;
 use App\Models\Pago;
+use App\Models\Direccion;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StorePedidoRequest;
 use App\Http\Requests\UpdatePedidoRequest;
@@ -15,9 +16,15 @@ class PedidoController extends Controller
 {
     public function index()
     {
-        $pedidos = Pedido::with(['usuario', 'novedades', 'pagos'])
-            ->orderBy('id_pedido', 'desc')
-            ->get();
+        $pedidos = Pedido::with([
+            'usuario',
+            'novedades',
+            'pagos',
+            'direccionOrigen',
+            'direccionDestino'
+        ])
+        ->orderBy('id_pedido', 'desc')
+        ->get();
 
         return view('pedidos.index', compact('pedidos'));
     }
@@ -26,7 +33,10 @@ class PedidoController extends Controller
     {
         $usuarios = Usuario::orderBy('primer_nombre')->get(['id_usuario', 'primer_nombre', 'primer_apellido']);
         $pagos = Pago::orderBy('metodo_de_pago')->get(['id_pago', 'metodo_de_pago']);
-        return view('pedidos.create', compact('usuarios', 'pagos'));
+        $direcciones = Direccion::where('usuarios_id_usuario', auth()->id())
+            ->get(['id_direccion', 'calle_dir', 'carrera_dir', 'numero_dir']);
+
+        return view('pedidos.create', compact('usuarios', 'pagos', 'direcciones'));
     }
 
     public function store(StorePedidoRequest $request)
@@ -38,6 +48,8 @@ class PedidoController extends Controller
                 'estado_pedido' => $data['estado_pedido'],
                 'fecha_pedido' => now(),
                 'usuario_id_usuario' => auth()->id(),
+                'id_direccion_origen' => $data['id_direccion_origen'],
+                'id_direccion_destino' => $data['id_direccion_destino'],
                 'peso_pedido' => $data['peso_pedido'] ?? 0,
                 'largo_pedido' => $data['largo_pedido'] ?? 0,
                 'ancho_pedido' => $data['ancho_pedido'] ?? 0,
@@ -59,7 +71,7 @@ class PedidoController extends Controller
                 ]);
             }
 
-            if (!empty($data['pagos'])) {
+            if (!empty($data['pagos']) && is_array($data['pagos'])) {
                 $pedido->pagos()->sync($data['pagos']);
             }
         });
@@ -70,7 +82,14 @@ class PedidoController extends Controller
 
     public function show(Pedido $pedido)
     {
-        $pedido->load(['usuario', 'novedades', 'pagos']);
+        $pedido->load([
+            'usuario',
+            'novedades',
+            'pagos',
+            'direccionOrigen',
+            'direccionDestino'
+        ]);
+
         return view('pedidos.show', compact('pedido'));
     }
 
@@ -78,8 +97,11 @@ class PedidoController extends Controller
     {
         $usuarios = Usuario::orderBy('primer_nombre')->get(['id_usuario', 'primer_nombre', 'primer_apellido']);
         $pagos = Pago::orderBy('metodo_de_pago')->get(['id_pago', 'metodo_de_pago']);
+        $direcciones = Direccion::where('usuarios_id_usuario', $pedido->usuario_id_usuario)
+            ->orWhere('usuarios_id_usuario', auth()->id())
+            ->get(['id_direccion', 'calle_dir', 'carrera_dir', 'numero_dir']);
 
-        return view('pedidos.edit', compact('pedido', 'usuarios', 'pagos'));
+        return view('pedidos.edit', compact('pedido', 'usuarios', 'pagos', 'direcciones'));
     }
 
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
@@ -89,6 +111,8 @@ class PedidoController extends Controller
         DB::transaction(function () use ($data, $pedido) {
             $pedido->update([
                 'estado_pedido' => $data['estado_pedido'],
+                'id_direccion_origen' => $data['id_direccion_origen'],
+                'id_direccion_destino' => $data['id_direccion_destino'],
                 'peso_pedido' => $data['peso_pedido'] ?? $pedido->peso_pedido,
                 'largo_pedido' => $data['largo_pedido'] ?? $pedido->largo_pedido,
                 'ancho_pedido' => $data['ancho_pedido'] ?? $pedido->ancho_pedido,
@@ -110,7 +134,7 @@ class PedidoController extends Controller
                 ]);
             }
 
-            if (!empty($data['pagos'])) {
+            if (!empty($data['pagos']) && is_array($data['pagos'])) {
                 $pedido->pagos()->sync($data['pagos']);
             }
         });

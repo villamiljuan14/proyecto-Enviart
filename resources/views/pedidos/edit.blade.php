@@ -17,6 +17,57 @@
                         $val = fn($key, $default = '') => old($key, $pedido->{$key} ?? $default);
                     @endphp
 
+                    {{-- Usuario (solo lectura) --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Usuario</label>
+                        <input
+                            type="text"
+                            value="{{ $pedido->usuario->primer_nombre ?? '' }} {{ $pedido->usuario->primer_apellido ?? '' }}"
+                            class="w-full border rounded px-3 py-2 bg-gray-100"
+                            readonly
+                        />
+                    </div>
+
+                    {{-- Dirección Origen --}}
+                    <div>
+                        <label for="id_direccion_origen" class="block text-sm font-medium text-gray-700">
+                            Dirección Origen *
+                        </label>
+                        <select name="id_direccion_origen" id="id_direccion_origen"
+                            class="mt-1 block w-full border rounded px-3 py-2" required>
+                            <option value="">-- Selecciona --</option>
+                            @foreach($direcciones as $direccion)
+                                <option value="{{ $direccion->id_direccion }}"
+                                    @selected($val('id_direccion_origen') == $direccion->id_direccion)>
+                                    {{ $direccion->calle_dir }} #{{ $direccion->carrera_dir }} - {{ $direccion->numero_dir }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_direccion_origen')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Dirección Destino --}}
+                    <div>
+                        <label for="id_direccion_destino" class="block text-sm font-medium text-gray-700">
+                            Dirección Destino *
+                        </label>
+                        <select name="id_direccion_destino" id="id_direccion_destino"
+                            class="mt-1 block w-full border rounded px-3 py-2" required>
+                            <option value="">-- Selecciona --</option>
+                            @foreach($direcciones as $direccion)
+                                <option value="{{ $direccion->id_direccion }}"
+                                    @selected($val('id_direccion_destino') == $direccion->id_direccion)>
+                                    {{ $direccion->calle_dir }} #{{ $direccion->carrera_dir }} - {{ $direccion->numero_dir }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_direccion_destino')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     {{-- Estado del pedido --}}
                     <div>
                         <label for="estado_pedido" class="block text-sm font-medium text-gray-700">Estado *</label>
@@ -32,23 +83,12 @@
                         @enderror
                     </div>
 
-                    {{-- Fecha del pedido --}}
+                    {{-- Fecha del pedido (solo lectura) --}}
                     <div>
                         <label class="block text-sm font-medium mb-1">Fecha del Pedido</label>
                         <input type="text"
                             value="{{ $pedido->fecha_pedido ? \Carbon\Carbon::parse($pedido->fecha_pedido)->format('Y-m-d H:i') : now()->format('Y-m-d H:i') }}"
                             class="w-full border rounded px-3 py-2 bg-gray-100" readonly>
-                    </div>
-
-                    {{-- Usuario (solo lectura) --}}
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Usuario</label>
-                        <input
-                            type="text"
-                            value="{{ auth()->user()->primer_nombre ?? 'Tú' }} {{ auth()->user()->primer_apellido ?? '' }}"
-                            class="w-full border rounded px-3 py-2 bg-gray-100"
-                            readonly
-                        />
                     </div>
 
                     {{-- Novedades --}}
@@ -68,7 +108,7 @@
                         @enderror
                     </div>
 
-                    {{-- Métodos de Pago: SELECT MÚLTIPLE --}}
+                    {{-- Métodos de Pago --}}
                     <div>
                         <label for="pagos" class="block text-sm font-medium text-gray-700">Métodos de Pago *</label>
                         <select name="pagos[]" id="pagos" multiple class="mt-1 block w-full border rounded px-3 py-2" required>
@@ -153,3 +193,4 @@
         </div>
     </div>
 </x-app-layout>
+

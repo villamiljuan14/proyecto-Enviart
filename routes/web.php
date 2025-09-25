@@ -6,8 +6,13 @@ use App\Http\Controllers\Formulario\FormularioController;
 use App\Http\Controllers\Pedido\PedidoController;
 use App\Http\Controllers\Ruta\RutaController;
 use App\Http\Controllers\Novedades\NovedadesController;
-
+use App\Http\Controllers\Direcciones\DireccionController;
 use App\Http\Controllers\Vehiculos\VehiculoController;
+
+
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,6 +28,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
     ->resource('vehiculos', VehiculoController::class)
     ->names('vehiculos');
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
+    ->resource('direcciones', DireccionController::class)
+    ->names('direcciones');
+
+
+
+
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
     ->group(function () {
